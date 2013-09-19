@@ -29,6 +29,9 @@
         this.fillStyle = fillStyle;
         this.strokeStyle = strokeStyle;
         
+        this.vx = 0;
+        this.vy = 0;
+        
         
         var toRadians = function (degrees) {
             return degrees * (Math.PI / 180);
@@ -94,10 +97,36 @@
     }
     
     // intentionally global so we can get at it in console:
-    testStar = new Star(ctx, 8, new Rectangle(100, 100, 200, 200), "#000000", "#000000");
+    var testStar = new Star(ctx, 8, new Rectangle(100, 100, 200, 200), "#000000", "#000000");
     
+    testStar.vy = 1;
     
+    window.requestAnimationFrame = window.requestAnimationFrame ||
+        window.webkitRequestAnimationFrame;
     
+    var drawLoop = function () {
+        
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        testStar.x += testStar.vx;
+        
+        if (testStar.x > canvas.width) {
+            testStar.vx = -1
+        }
+        
+        if (testStar.x < 0) {
+            testStar.vx = 1;
+        }
+        
+        testStar.draw();
+        requestAnimationFrame(drawLoop);
+        
+        
+        
+        console.log("drawing");
+    };
+    
+    requestAnimationFrame(drawLoop);
     
     
     
